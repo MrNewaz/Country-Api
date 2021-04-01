@@ -2,9 +2,11 @@ import logo from './logo.svg';
 import './App.css';
 import { useEffect, useState } from 'react';
 import Country from './Components/Country/Country';
+import Cart from './Components/Cart/Cart';
 
 function App() {
   const [countries, setCountries] = useState([]);
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     fetch('https://restcountries.eu/rest/v2/all')
@@ -13,12 +15,27 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
   console.log(countries);
+
+  const handleClick = (x) => {
+    const newCart = [...cart, x];
+    setCart(newCart);
+  };
+  console.log(cart);
+
   return (
     <div className='App'>
       <h1>Country Loaded : {countries.length}</h1>
 
+      <h1>Country added : {cart.length}</h1>
+
+      <Cart cart={cart} />
+
       {countries.map((country) => (
-        <Country country={country} />
+        <Country
+          handleClick={handleClick}
+          key={country.alpha3Code}
+          country={country}
+        />
       ))}
 
       <header className='App-header'>
